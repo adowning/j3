@@ -1,6 +1,6 @@
 import { User } from './user'
 import { Issue } from './issue'
-import { Workorder } from '.'
+import { WarehouseBoardItem } from '.'
 
 export interface Comment {
   id: number
@@ -9,10 +9,10 @@ export interface Comment {
   updatedAt: Date
   userId: string
   issueId: number
-  workorderId: number
+  warehouseboarditemId: number
   user: User
   issue: Issue
-  workorder: Workorder
+  warehouseboarditem: WarehouseBoardItem
 }
 
 export default Comment

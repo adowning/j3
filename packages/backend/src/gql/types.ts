@@ -1,11 +1,11 @@
 import { InputType, Field, ID, Float } from "type-graphql";
-import { Comment, Issue, Project, User, Workorder } from "@/models";
+import { Comment, Issue, Project, User, WarehouseBoardItem } from "@/models";
 import { IssueType, IssueStatus, IssuePriority } from "@/constants/issue";
 import {
-  WorkorderType,
-  WorkorderStatus,
-  WorkorderPriority,
-} from "@/constants/workorder";
+  WarehouseBoardItemType,
+  WarehouseBoardItemStatus,
+  WarehouseBoardItemPriority,
+} from "@/constants/warehouseboarditem";
 import { ProjectCategory } from "@/constants/project";
 
 @InputType()
@@ -91,15 +91,19 @@ export class IssueCreateInput implements Partial<Issue> {
 }
 
 @InputType()
-export class WorkorderUpdateInput implements Partial<Workorder> {
+export class WarehouseBoardItemUpdateInput
+ 
+ 
+ 
+  implements Partial<WarehouseBoardItem> {
   @Field({ nullable: true })
   title: string;
   @Field(() => String, { nullable: true })
-  type: WorkorderType;
+  type: WarehouseBoardItemType;
   @Field(() => String, { nullable: true })
-  status: WorkorderStatus;
+  status: WarehouseBoardItemStatus;
   @Field(() => String, { nullable: true })
-  priority: WorkorderPriority;
+  priority: WarehouseBoardItemPriority;
   @Field(() => Float, { nullable: true })
   listPosition: number;
   @Field(() => ID, { nullable: true })
@@ -115,15 +119,19 @@ export class WorkorderUpdateInput implements Partial<Workorder> {
 }
 
 @InputType()
-export class WorkorderCreateInput implements Partial<Workorder> {
+export class WarehouseBoardItemCreateInput
+ 
+ 
+ 
+  implements Partial<WarehouseBoardItem> {
   @Field()
   title: string;
   @Field(() => String)
-  type: WorkorderType;
+  type: WarehouseBoardItemType;
   @Field(() => String)
-  status: WorkorderStatus;
+  status: WarehouseBoardItemStatus;
   @Field(() => String)
-  priority: WorkorderPriority;
+  priority: WarehouseBoardItemPriority;
   @Field(() => ID)
   reporterId: string;
   @Field(() => ID)

@@ -2,7 +2,9 @@
   <div :style="{ width: `${sidebarWidth}px` }" class="sidebar">
     <div class="sidebar-content">
       <div class="flex py-6 px-1">
-        <j-icon name="project-avatar" :size="40"></j-icon>
+        <!-- <j-icon name="project-avatar" :size="40"></j-icon> -->
+        <img src="@/assets/img/aa.png" width="40" alt="" />
+
         <div class="pt-1 pl-2">
           <div class="mb-1 text-textDark text-15 font-medium">
             {{ project.name }}

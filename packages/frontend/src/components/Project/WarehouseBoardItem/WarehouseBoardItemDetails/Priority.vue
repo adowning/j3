@@ -8,10 +8,10 @@
       variant="empty"
       :dropdownWidth="300"
       :value="value"
-      :options="workorderPriorityOptions"
+      :options="warehouseboarditemPriorityOptions"
       customRender
       customRenderOption
-      @change="updateWorkorderPriority"
+      @change="updateWarehouseBoardItemPriority"
     >
       <template v-slot:default="{ label, icon, color }">
         <j-button variant="secondary">
@@ -39,39 +39,39 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import { WorkorderPriority, WorkorderPriorityCopy } from '@/types/workorder'
-import { workorderPriorityColors } from '@/utils/colors'
+import { WarehouseBoardItemPriority, WarehouseBoardItemPriorityCopy } from '@/types/warehouseboarditem'
+import { warehouseboarditemPriorityColors } from '@/utils/colors'
 export default defineComponent({
   props: {
     value: {
-      type: String as () => WorkorderPriority,
+      type: String as () => WarehouseBoardItemPriority,
       required: true
     },
-    updateWorkorder: {
+    updateWarehouseBoardItem: {
       type: Function,
       required: true
     }
   },
   setup(props) {
-    const workorderPriorityOptions = Object.values(WorkorderPriority).map(priority => ({
+    const warehouseboarditemPriorityOptions = Object.values(WarehouseBoardItemPriority).map(priority => ({
       value: priority,
-      label: WorkorderPriorityCopy[priority],
-      icon: [WorkorderPriority.LOW, WorkorderPriority.LOWEST].includes(priority)
+      label: WarehouseBoardItemPriorityCopy[priority],
+      icon: [WarehouseBoardItemPriority.LOW, WarehouseBoardItemPriority.LOWEST].includes(priority)
         ? 'arrow-down'
         : 'arrow-up',
-      color: workorderPriorityColors[priority]
+      color: warehouseboarditemPriorityColors[priority]
     }))
-    const updateWorkorderPriority = async (priority: WorkorderPriority) => {
+    const updateWarehouseBoardItemPriority = async (priority: WarehouseBoardItemPriority) => {
       try {
-        await props.updateWorkorder({ priority })
+        await props.updateWarehouseBoardItem({ priority })
       } catch (error) {
         console.error(error)
       }
     }
 
     return {
-      workorderPriorityOptions,
-      updateWorkorderPriority
+      warehouseboarditemPriorityOptions,
+      updateWarehouseBoardItemPriority
     }
   }
 })

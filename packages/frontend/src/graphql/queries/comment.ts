@@ -6,7 +6,7 @@ export const createComment = gql`
       id
       body
       issueId
-      workorderId
+      warehouseboarditemId
       userId
       createdAt
       updatedAt

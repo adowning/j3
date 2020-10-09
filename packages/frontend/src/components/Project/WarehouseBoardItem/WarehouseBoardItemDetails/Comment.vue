@@ -93,7 +93,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    refetchWorkorder: {
+    refetchWarehouseBoardItem: {
       type: Function,
       required: true
     }
@@ -117,12 +117,12 @@ export default defineComponent({
         isWorking.value = true
         const comment = {
           body: newComment.value,
-          workorderId: props.comment.workorderId,
+          warehouseboarditemId: props.comment.warehouseboarditemId,
           userId: props.comment.user.id
         }
         // eslint-disable-next-line
         await createMutation({ comment } as any)
-        await props.refetchWorkorder()
+        await props.refetchWarehouseBoardItem()
         newComment.value = ''
         isFormOpen.value = false
         isWorking.value = false
@@ -141,12 +141,12 @@ export default defineComponent({
         isWorking.value = true
         const comment = {
           body: newComment.value,
-          workorderId: props.comment.workorderId,
+          warehouseboarditemId: props.comment.warehouseboarditemId,
           userId: props.comment.user.id
         }
         // eslint-disable-next-line
         await updateMutation({ comment, commentId: props.comment.id } as any)
-        await props.refetchWorkorder()
+        await props.refetchWarehouseBoardItem()
         isFormOpen.value = false
         isWorking.value = false
       } catch (error) {

@@ -6,12 +6,12 @@
       :mode="mode"
       :value="initialValue"
       ref="editor"
-      placeholder="Describe the workorder"
+      placeholder="Describe the warehouseboarditem"
     />
     <div v-if="!readOnly" class="pt-3 flex items-center">
       <j-button
         :isWorking="isWorking"
-        @click="updateWorkorderDescription"
+        @click="updateWarehouseBoardItemDescription"
         variant="primary"
         class="mr-2"
       >
@@ -31,7 +31,7 @@ export default defineComponent({
       type: String,
       default: ''
     },
-    updateWorkorder: {
+    updateWarehouseBoardItem: {
       type: Function,
       required: true
     }
@@ -49,12 +49,12 @@ export default defineComponent({
       handleModeChange('read')
     }
 
-    const updateWorkorderDescription = async () => {
+    const updateWarehouseBoardItemDescription = async () => {
       try {
         isWorking.value = true
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const description = (editor.value as any).getHTMLValue()
-        await props.updateWorkorder({ description })
+        await props.updateWarehouseBoardItem({ description })
         isWorking.value = false
         handleModeChange('read')
       } catch (error) {
@@ -69,7 +69,7 @@ export default defineComponent({
       isWorking,
       cancelWrite,
       handleModeChange,
-      updateWorkorderDescription
+      updateWarehouseBoardItemDescription
     }
   }
 })

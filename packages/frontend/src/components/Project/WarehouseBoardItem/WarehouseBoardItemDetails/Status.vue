@@ -8,16 +8,16 @@
       variant="empty"
       :dropdownWidth="300"
       :withClearValue="false"
-      :options="workorderStatusOptions"
+      :options="warehouseboarditemStatusOptions"
       :value="value"
-      @change="updateWorkorderStatus"
+      @change="updateWarehouseBoardItemStatus"
       customRender
       customRenderOption
     >
       <template v-slot:default="{ label }">
         <j-button
           class="uppercase text-textMedium text-13"
-          :variant="workorderStatusVariants[value]"
+          :variant="warehouseboarditemStatusVariants[value]"
         >
           {{ label }}
         </j-button>
@@ -35,36 +35,36 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import { WorkorderStatusCopy, WorkorderStatus } from '@/types/workorder'
-import { workorderStatusVariants } from '@/utils/colors'
+import { WarehouseBoardItemStatusCopy, WarehouseBoardItemStatus } from '@/types/warehouseboarditem'
+import { warehouseboarditemStatusVariants } from '@/utils/colors'
 export default defineComponent({
   props: {
     value: {
-      type: String as () => WorkorderStatus,
+      type: String as () => WarehouseBoardItemStatus,
       required: true
     },
-    updateWorkorder: {
+    updateWarehouseBoardItem: {
       type: Function,
       required: true
     }
   },
   setup(props) {
-    const workorderStatusOptions = Object.values(WorkorderStatus).map(status => ({
+    const warehouseboarditemStatusOptions = Object.values(WarehouseBoardItemStatus).map(status => ({
       value: status,
-      label: WorkorderStatusCopy[status]
+      label: WarehouseBoardItemStatusCopy[status]
     }))
-    const updateWorkorderStatus = async (status: WorkorderStatus) => {
+    const updateWarehouseBoardItemStatus = async (status: WarehouseBoardItemStatus) => {
       try {
-        await props.updateWorkorder({ status })
+        await props.updateWarehouseBoardItem({ status })
       } catch (error) {
         console.error(error)
       }
     }
 
     return {
-      workorderStatusOptions,
-      workorderStatusVariants,
-      updateWorkorderStatus
+      warehouseboarditemStatusOptions,
+      warehouseboarditemStatusVariants,
+      updateWarehouseBoardItemStatus
     }
   }
 })

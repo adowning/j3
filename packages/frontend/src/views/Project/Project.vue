@@ -13,7 +13,7 @@
 import { defineComponent, ref, computed } from '@vue/composition-api'
 import { useQuery } from '@vue/apollo-composable'
 import { mutations } from '@/store'
-import { getProjectWithUsersAndIssues , getProjectWithUsersAndWorkorders} from '@/graphql/queries/project'
+import { getProjectWithUsersAndIssues , getProjectWithUsersAndWarehouseBoardItems} from '@/graphql/queries/project'
 import Navigation from '@/components/Navigation/Navigation.vue'
 import PageLoader from '@/components/Loader.vue'
 import ErrorPage from '@/components/ErrorPage.vue'
@@ -43,7 +43,7 @@ export default defineComponent({
 
     const { loading, onResult, error } = useQuery(
       // getProjectWithUsersAndIssues,
-      getProjectWithUsersAndWorkorders,
+      getProjectWithUsersAndWarehouseBoardItems,
       {},
       { fetchPolicy: 'no-cache' }
     )
@@ -53,7 +53,7 @@ export default defineComponent({
         const { data } = res
         if (data) {
           // mutations.setProject(data.getProjectWithUsersAndIssues)
-          mutations.setProject(data.getProjectWithUsersAndWorkorders)
+          mutations.setProject(data.getProjectWithUsersAndWarehouseBoardItems)
         }
       }
     })

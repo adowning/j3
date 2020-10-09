@@ -1,51 +1,51 @@
-import { Issue, Workorder } from '@/types'
-import { WorkorderStatus } from '@/types/workorder'
+import { Issue, WarehouseBoardItem } from '@/types'
+import { WarehouseBoardItemStatus } from '@/types/warehouseboarditem'
 
 export interface DropResult {
   removedIndex: number | null
   addedIndex: number | null
   to: number
-  payload: Workorder
+  payload: WarehouseBoardItem
 }
 
 export interface Target {
   index: number
-  droppableId: WorkorderStatus
+  droppableId: WarehouseBoardItemStatus
 }
 
 export const moveItemWithinArray = (
-  arr: Workorder[],
-  item: Workorder,
-  newIndex: number
-) => {
-  const arrClone = [...arr]
-  const oldIndex = arrClone.indexOf(item)
-  arrClone.splice(newIndex, 0, arrClone.splice(oldIndex, 1)[0])
-  return arrClone
-}
+         arr: WarehouseBoardItem[],
+         item: WarehouseBoardItem,
+         newIndex: number
+       ) => {
+         const arrClone = [...arr]
+         const oldIndex = arrClone.indexOf(item)
+         arrClone.splice(newIndex, 0, arrClone.splice(oldIndex, 1)[0])
+         return arrClone
+       }
 
 export const insertItemIntoArray = (
-  arr: Workorder[],
-  item: Workorder,
-  index: number
-) => {
-  const arrClone = [...arr]
-  arrClone.splice(index, 0, item)
-  return arrClone
-}
+         arr: WarehouseBoardItem[],
+         item: WarehouseBoardItem,
+         index: number
+       ) => {
+         const arrClone = [...arr]
+         arrClone.splice(index, 0, item)
+         return arrClone
+       }
 export const updateArrayItemById = (
-  arr: Workorder[],
-  itemId: string,
-  fields: Partial<Workorder>
-) => {
-  const arrClone = [...arr]
-  const item = arrClone.find(({ id }) => id === itemId)
-  if (item) {
-    const itemIndex = arrClone.indexOf(item)
-    arrClone.splice(itemIndex, 1, { ...item, ...fields })
-  }
-  return arrClone
-}
+                arr: WarehouseBoardItem[],
+                itemId: string,
+                fields: Partial<WarehouseBoardItem>
+              ) => {
+                const arrClone = [...arr]
+                const item = arrClone.find(({ id }) => id === itemId)
+                if (item) {
+                  const itemIndex = arrClone.indexOf(item)
+                  arrClone.splice(itemIndex, 1, { ...item, ...fields })
+                }
+                return arrClone
+              }
 export const updateArrayItemByIdIssue = (
   arr: Issue[],
   itemId: string,
@@ -66,71 +66,99 @@ export const isPositionChanged = (destination: Target, source: Target) => {
   return !isSameList || !isSamePosition
 }
 
-export const getSortedListWorkorders = (
-  workorders: Workorder[] | readonly Workorder[],
-  status: string
-) =>
-  workorders
-    .filter(workorder => workorder.status === status)
-    .sort((a, b) => a.listPosition - b.listPosition)
+export const getSortedListWarehouseBoardItems = (
+         warehouseBoardItems:
+           | WarehouseBoardItem[]
+           | readonly WarehouseBoardItem[],
+         status: string
+       ) =>
+         warehouseBoardItems
+           .filter(warehouseboarditem => warehouseboarditem.status === status)
+           .sort((a, b) => a.listPosition - b.listPosition)
 
-const getAfterDropPrevNextWorkorder = (
-  allWorkorders: Workorder[],
+const getAfterDropPrevNextWarehouseBoardItem = (
+  allWarehouseBoardItems: WarehouseBoardItem[],
   destination: Target,
   source: Target,
-  droppedWorkorderId: string
+  droppedWarehouseBoardItemId: string
 ) => {
-  const beforeDropDestinationWorkorders = getSortedListWorkorders(
-    allWorkorders,
+  const beforeDropDestinationWarehouseBoardItems = getSortedListWarehouseBoardItems(
+    allWarehouseBoardItems,
     destination.droppableId
   )
-  const droppedWorkorder = allWorkorders.find(
-    workorder => workorder.id === droppedWorkorderId
+  const droppedWarehouseBoardItem = allWarehouseBoardItems.find(
+    warehouseboarditem => warehouseboarditem.id === droppedWarehouseBoardItemId
   )
   const isSameList = destination.droppableId === source.droppableId
 
-  const afterDropDestinationWorkorders = isSameList
+  const afterDropDestinationWarehouseBoardItems = isSameList
     ? moveItemWithinArray(
-        beforeDropDestinationWorkorders,
-        droppedWorkorder as Workorder,
+        beforeDropDestinationWarehouseBoardItems,
+        droppedWarehouseBoardItem as WarehouseBoardItem,
         destination.index
       )
     : insertItemIntoArray(
-        beforeDropDestinationWorkorders,
-        droppedWorkorder as Workorder,
+        beforeDropDestinationWarehouseBoardItems,
+        droppedWarehouseBoardItem as WarehouseBoardItem,
         destination.index
       )
 
   return {
-    prevWorkorder: afterDropDestinationWorkorders[destination.index - 1],
-    nextWorkorder: afterDropDestinationWorkorders[destination.index + 1]
+    prevWarehouseBoardItem:
+
+
+                afterDropDestinationWarehouseBoardItems[destination.index - 1],
+    nextWarehouseBoardItem:
+     
+     
+      afterDropDestinationWarehouseBoardItems[destination.index + 1]
   }
 }
 
-export const calculateWorkorderListPosition = (
-  allWorkorders: Workorder[],
-  destination: Target,
-  source: Target,
-  droppedWorkorderId: string
-) => {
-  const { prevWorkorder, nextWorkorder } = getAfterDropPrevNextWorkorder(
-    allWorkorders,
-    destination,
-    source,
-    droppedWorkorderId
-  )
-  let position
+export const calculateWarehouseBoardItemListPosition = (
+         allWarehouseBoardItems: WarehouseBoardItem[],
+         destination: Target,
+         source: Target,
+         droppedWarehouseBoardItemId: string
+       ) => {
+         const {
+   
+          
+  
+     prevWarehouseBoardItem,
+  
+     
 
-  if (!prevWorkorder && !nextWorkorder) {
-    position = 1
-  } else if (!prevWorkorder) {
-    position = nextWorkorder.listPosition - 1
-  } else if (!nextWorkorder) {
-    position = prevWorkorder.listPosition + 1
-  } else {
-    position =
-      prevWorkorder.listPosition +
-      (nextWorkorder.listPosition - prevWorkorder.listPosition) / 2
-  }
-  return position
-}
+             nextWarehouseBoardItem
+
+  
+ 
+         } = getAfterDropPrevNextWarehouseBoardItem(
+           allWarehouseBoardItems,
+           destination,
+           source,
+           droppedWarehouseBoardItemId
+         )
+         let position
+
+         if (!prevWarehouseBoardItem && !nextWarehouseBoardItem) {
+           position = 1
+         } else if (!prevWarehouseBoardItem) {
+           position = nextWarehouseBoardItem.listPosition - 1
+         } else if (!nextWarehouseBoardItem) {
+           position = prevWarehouseBoardItem.listPosition + 1
+         } else {
+           position =
+             prevWarehouseBoardItem.listPosition +
+             (nextWarehouseBoardItem.listPosition -
+  
+      
+
+                            prevWarehouseBoardItem.listPosition) /
+       
+      
+       
+                2
+         }
+         return position
+       }

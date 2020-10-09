@@ -31,33 +31,33 @@
     />
 
  <Modal
-      v-if="isWorkorderCreateOpen"
-      @close="isWorkorderCreateOpen = false"
+      v-if="isWarehouseBoardItemCreateOpen"
+      @close="isWarehouseBoardItemCreateOpen = false"
       :width="700"
-      :component="WorkorderCreate"
+      :component="WarehouseBoardItemCreate"
     />
     <Modal
-      v-if="isWorkorderSearchOpen"
-      @close="isWorkorderSearchOpen = false"
+      v-if="isWarehouseBoardItemSearchOpen"
+      @close="isWarehouseBoardItemSearchOpen = false"
       variant="aside"
       :width="600"
-      :component="WorkorderSearch"
+      :component="WarehouseBoardItemSearch"
     />
 
     <Modal
-      v-if="isWorkorderDetailsOpen"
-      @close="isWorkorderDetailsOpen = false"
+      v-if="isWarehouseBoardItemDetailsOpen"
+      @close="isWarehouseBoardItemDetailsOpen = false"
       :width="1040"
-      :component="WorkorderDetails"
-      :componentProps="{ workorderId }"
+      :component="WarehouseBoardItemDetails"
+      :componentProps="{ warehouseboarditemId }"
     />
     <Modal
-      v-if="isWorkorderDeleteOpen"
-      @confirm="confirmWorkorderDelete"
-      @close="isWorkorderDeleteOpen = false"
+      v-if="isWarehouseBoardItemDeleteOpen"
+      @confirm="confirmWarehouseBoardItemDelete"
+      @close="isWarehouseBoardItemDeleteOpen = false"
       :width="600"
       :component="Confirm"
-      :componentProps="workorderDeleteProps"
+      :componentProps="warehouseboarditemDeleteProps"
     />
 
     <Modal
@@ -77,6 +77,10 @@ import { defineComponent, ref } from '@vue/composition-api'
 import IssueCreate from '@/components/Project/Issue/IssueCreate/IssueCreate.vue'
 import IssueSearch from '@/components/Project/Issue/IssueSearch/IssueSearch.vue'
 import IssueDetails from '@/components/Project/Issue/IssueDetails/IssueDetails.vue'
+import WarehouseBoardItemCreate from '@/components/Project/WarehouseBoardItem/WarehouseBoardItemCreate/WarehouseBoardItemCreate.vue'
+
+import WarehouseBoardItemSearch from '@/components/Project/WarehouseBoardItem/WarehouseBoardItemSearch/WarehouseBoardItemSearch.vue'
+import WarehouseBoardItemDetails from '@/components/Project/WarehouseBoardItem/WarehouseBoardItemDetails/WarehouseBoardItemDetails.vue'
 import Confirm from './Confirm.vue'
 import Modal from './Modal.vue'
 import eventBus from '@/utils/eventBus'
@@ -89,8 +93,15 @@ export default defineComponent({
     const isIssueSearchOpen = ref<boolean>(false)
     const isIssueDetailsOpen = ref<boolean>(false)
     const isIssueDeleteOpen = ref<boolean>(false)
+
+      const isWarehouseBoardItemCreateOpen = ref<boolean>(false)
+    const isWarehouseBoardItemSearchOpen = ref<boolean>(false)
+    const isWarehouseBoardItemDetailsOpen = ref<boolean>(false)
+    const isWarehouseBoardItemDeleteOpen = ref<boolean>(false)
+
     const isCommentDeleteOpen = ref<boolean>(false)
     const issueId = ref<string>(false)
+    const warehouseBoardItemId = ref<string>(false)
     const commentId = ref<string>(false)
 
     eventBus.$on(
@@ -112,6 +123,25 @@ export default defineComponent({
       isIssueDeleteOpen.value = isOpen
     })
     eventBus.$on(
+      'toggle-warehouseBoardItem-details',
+      (isOpen: boolean, id: string | number) => {
+        if (isOpen) {
+          warehouseBoardItemId.value = `${id}`
+        }
+        isWarehouseBoardItemDetailsOpen.value = isOpen
+      }
+    )
+    eventBus.$on('toggle-warehouseBoardItem-search', (isOpen: boolean) => {
+      isWarehouseBoardItemSearchOpen.value = isOpen
+    })
+    eventBus.$on('toggle-warehouseBoardItem-create', (isOpen: boolean) => {
+      isWarehouseBoardItemCreateOpen.value = isOpen
+    })
+    eventBus.$on('toggle-issue-delete', (isOpen: boolean) => {
+      isWarehouseBoardItemDeleteOpen.value = isOpen
+    })
+
+    eventBus.$on(
       'toggle-comment-delete',
       (isOpen: boolean, id: string | number) => {
         if (isOpen) {
@@ -127,6 +157,13 @@ export default defineComponent({
       confirmText: 'Delete issue',
       variant: 'primary'
     }
+       const warehouseBoardItemDeleteProps = {
+      title: 'Are you sure you want to delete this Order?',
+      message: "Once you delete, it's gone for good.",
+      confirmText: 'Delete order',
+      variant: 'primary'
+    }
+
     const commentDeleteProps = {
       title: 'Are you sure you want to delete this comment?',
       message: "Once you delete, it's gone for good.",
@@ -145,6 +182,16 @@ export default defineComponent({
       IssueCreate,
       IssueDetails,
       IssueSearch,
+            WarehouseBoardItemCreate,
+       WarehouseBoardItemDetails,
+       WarehouseBoardItemSearch,
+ isWarehouseBoardItemCreateOpen,
+      isWarehouseBoardItemSearchOpen,
+      isWarehouseBoardItemDetailsOpen,
+      isWarehouseBoardItemDeleteOpen,
+     warehouseBoardItemDeleteProps,
+
+      warehouseBoardItemId,
       Confirm,
       isIssueCreateOpen,
       isIssueSearchOpen,

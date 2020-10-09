@@ -17,7 +17,7 @@ import { ObjectType, ID, Field, Int, Float } from 'type-graphql'
 import striptags from 'striptags'
 import is from '@/utils/validations'
 import { IssueType, IssuePriority, IssueStatus } from '@/constants/issue'
-import { Project, User, Comment } from '@/models'
+import { Project, User, Comment } from "@/models";
 
 @ObjectType()
 @Entity()

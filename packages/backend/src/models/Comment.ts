@@ -8,7 +8,7 @@ import {
   Entity,
 } from "typeorm";
 import is from "@/utils/validations";
-import { User, Issue, Workorder } from "@/models";
+import { User, Issue, WarehouseBoardItem } from "@/models";
 import { ObjectType, Field, ID } from "type-graphql";
 
 @Entity()
@@ -44,7 +44,7 @@ class Comment extends BaseEntity {
 
   @Field()
   @Column("integer")
-  workorderId: number;
+  warehouseBoardItemId: number;
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.comments)
@@ -54,11 +54,15 @@ class Comment extends BaseEntity {
   @ManyToOne(() => Issue, (issue) => issue.comments, { onDelete: "CASCADE" })
   issue: Issue;
 
-  @Field(() => Workorder)
-  @ManyToOne(() => Workorder, (workorder) => workorder.comments, {
-    onDelete: "CASCADE",
-  })
-  workorder: Workorder;
+  @Field(() => WarehouseBoardItem)
+  @ManyToOne(
+    () => WarehouseBoardItem,
+    (warehouseBoardItem) => warehouseBoardItem.comments,
+          {
+          onDelete: "CASCADE",
+        }
+  )
+  warehouseBoardItem: WarehouseBoardItem;
 }
 
 export default Comment;

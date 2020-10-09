@@ -88,14 +88,14 @@ export default defineComponent({
         icon: 'search',
         tooltip: 'Search issue',
         handler: () => {
-          eventBus.$emit('toggle-issue-search', true)
+          eventBus.$emit('toggle-warehouseBoardItem-search', true)
         }
       },
       {
         icon: 'plus',
         tooltip: 'Create issue',
         handler: () => {
-          eventBus.$emit('toggle-issue-create', true)
+          eventBus.$emit('toggle-warehouseBoardItem-create', true)
         }
       }
     ]

@@ -4,7 +4,7 @@
       placeholder="Short summary"
       class="title"
       @input="e => (title = e)"
-      @blur="updateWorkorderDescription"
+      @blur="updateWarehouseBoardItemDescription"
       :value="value"
     />
   </div>
@@ -18,7 +18,7 @@ export default defineComponent({
       type: String,
       default: ''
     },
-    updateWorkorder: {
+    updateWarehouseBoardItem: {
       type: Function,
       required: true
     }
@@ -27,10 +27,10 @@ export default defineComponent({
     const isWorking = ref<boolean>(false)
     const title = ref<HTMLDivElement>(props.value)
 
-    const updateWorkorderDescription = async () => {
+    const updateWarehouseBoardItemDescription = async () => {
       try {
         isWorking.value = true
-        await props.updateWorkorder({ title: title.value })
+        await props.updateWarehouseBoardItem({ title: title.value })
         isWorking.value = false
       } catch (error) {
         console.error(error)
@@ -40,7 +40,7 @@ export default defineComponent({
     return {
       title,
       isWorking,
-      updateWorkorderDescription
+      updateWarehouseBoardItemDescription
     }
   }
 })

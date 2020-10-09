@@ -17,20 +17,32 @@ import { ObjectType, ID, Field, Int, Float } from "type-graphql";
 import striptags from "striptags";
 import is from "@/utils/validations";
 import {
-  WorkorderType,
-  WorkorderPriority,
-  WorkorderStatus,
-} from "@/constants/workorder";
+  WarehouseBoardItemType,
+  WarehouseBoardItemPriority,
+  WarehouseBoardItemStatus,
+} from "@/constants/warehouseboarditem";
 import { Project, User, Comment } from "@/models";
 
 @ObjectType()
 @Entity()
-class Workorder extends BaseEntity {
+class WarehouseBoardItem extends BaseEntity {
   static validations = {
     title: [is.required(), is.maxLength(200)],
-    type: [is.required(), is.oneOf(Object.values(WorkorderType))],
-    status: [is.required(), is.oneOf(Object.values(WorkorderStatus))],
-    priority: [is.required(), is.oneOf(Object.values(WorkorderPriority))],
+    type: [is.required(), is.oneOf(Object.values(WarehouseBoardItemType))],
+    status: [is.required(), is.oneOf(Object.values(WarehouseBoardItemStatus))],
+    priority: [
+      is.required(),
+
+      is.oneOf(Object.values(WarehouseBoardItemPriority)),
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
     listPosition: is.required(),
     reporterId: is.required(),
   };
@@ -45,15 +57,15 @@ class Workorder extends BaseEntity {
 
   @Field(() => String)
   @Column("varchar")
-  type: WorkorderType;
+  type: WarehouseBoardItemType;
 
   @Field(() => String)
   @Column("varchar")
-  status: WorkorderStatus;
+  status: WarehouseBoardItemStatus;
 
   @Field(() => String)
   @Column("varchar")
-  priority: WorkorderPriority;
+  priority: WarehouseBoardItemPriority;
 
   @Field(() => Float)
   @Column("double precision")
@@ -92,7 +104,7 @@ class Workorder extends BaseEntity {
   reporterId: string;
 
   @Field(() => Project)
-  @ManyToOne(() => Project, (project) => project.workorders)
+  @ManyToOne(() => Project, (project) => project.warehouseBoardItems)
   project: Project;
 
   @Field()
@@ -100,16 +112,18 @@ class Workorder extends BaseEntity {
   projectId: number;
 
   @Field(() => [Comment], { defaultValue: [] })
-  @OneToMany(() => Comment, (comment) => comment.workorder)
+  @OneToMany(() => Comment, (comment) => comment.warehouseBoardItem)
   comments: Comment[];
 
   @Field(() => [User])
-  @ManyToMany(() => User, (user) => user.workorders)
+  @ManyToMany(() => User, (user) => user.warehouseBoardItems)
   @JoinTable()
   users: User[];
 
   @Field(() => [ID])
-  @RelationId((workorder: Workorder) => workorder.users)
+  @RelationId(
+    (warehouseBoardItem: WarehouseBoardItem) => warehouseBoardItem.users
+  )
   userIds: string[];
 
   @BeforeInsert()
@@ -121,4 +135,4 @@ class Workorder extends BaseEntity {
   };
 }
 
-export default Workorder;
+export default WarehouseBoardItem;

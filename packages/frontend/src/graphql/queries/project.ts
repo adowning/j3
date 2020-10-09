@@ -32,37 +32,37 @@ export const getProjectWithUsersAndIssues = gql`
   }
 `
 
-export const getProjectWithUsersAndWorkorders = gql`
-  {
-    getProjectWithUsersAndWorkorders {
-      id
-      name
-      url
-      description
-      category
-      createdAt
-      updatedAt
-      users {
-        id
-        name
-        avatarUrl
-        projectId
-      }
-      workorders {
-        id
-        title
-        description
-        type
-        status
-        priority
-        listPosition
-        createdAt
-        updatedAt
-        userIds
-      }
-    }
-  }
-`
+export const getProjectWithUsersAndWarehouseBoardItems = gql`
+                {
+                  getProjectWithUsersAndWarehouseBoardItems {
+                    id
+                    name
+                    url
+                    description
+                    category
+                    createdAt
+                    updatedAt
+                    users {
+                      id
+                      name
+                      avatarUrl
+                      projectId
+                    }
+                    warehouseBoardItems {
+                      id
+                      title
+                      description
+                      type
+                      status
+                      priority
+                      listPosition
+                      createdAt
+                      updatedAt
+                      userIds
+                    }
+                  }
+                }
+              `
 export const updateProject = gql`
   mutation updateProject($project: ProjectInput!) {
     updateProject(project: $project) {

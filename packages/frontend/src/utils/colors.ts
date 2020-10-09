@@ -1,6 +1,6 @@
 import Color from 'color'
 import { IssuePriority, IssueStatus } from '@/types/issue'
-import { WorkorderPriority, WorkorderStatus } from '@/types/workorder'
+import { WarehouseBoardItemPriority, WarehouseBoardItemStatus } from '@/types/warehouseboarditem'
 
 export const tuneColor = {
   darken: (colorValue: string, amount: number) =>
@@ -47,14 +47,14 @@ export const issuePriorityColors = {
   [IssuePriority.LOW]: '#2D8738',
   [IssuePriority.LOWEST]: '#57A55A'
 }
-export const workorderStatusVariants = {
+export const warehouseboarditemStatusVariants = {
   [IssueStatus.BACKLOG]: 'secondary',
   [IssueStatus.DONE]: 'success',
   [IssueStatus.SELECTED]: 'secondary',
   [IssueStatus.INPROGRESS]: 'primary'
 }
 
-export const workorderPriorityColors = {
+export const warehouseboarditemPriorityColors = {
   [IssuePriority.HIGHEST]: '#CD1317',
   [IssuePriority.HIGH]: '#E9494A',
   [IssuePriority.MEDIUM]: '#E97F33',

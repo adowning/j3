@@ -12,7 +12,7 @@
       :options="userOptions"
       customRender
       customRenderOption
-      @change="updateWorkorderReporter"
+      @change="updateWarehouseBoardItemReporter"
     >
       <template v-slot:default="{ user }">
         <j-button variant="secondary">
@@ -51,7 +51,7 @@
       :options="userOptions"
       customRender
       customRenderOption
-      @change="updateWorkorderAssignees"
+      @change="updateWarehouseBoardItemAssignees"
     >
       <template v-slot:default="{ user, remove, optionValue }">
         <j-button variant="secondary">
@@ -100,7 +100,7 @@ export default defineComponent({
       type: Array as () => Array<string>,
       required: true
     },
-    updateWorkorder: {
+    updateWarehouseBoardItem: {
       type: Function,
       required: true
     }
@@ -117,16 +117,16 @@ export default defineComponent({
         project.value.users.find(user => user.id === userId),
         ['__typename']
       )
-    const updateWorkorderReporter = async (userId: string) => {
+    const updateWarehouseBoardItemReporter = async (userId: string) => {
       try {
-        await props.updateWorkorder({ reporterId: userId })
+        await props.updateWarehouseBoardItem({ reporterId: userId })
       } catch (error) {
         console.error(error)
       }
     }
-    const updateWorkorderAssignees = async (userIds: [string]) => {
+    const updateWarehouseBoardItemAssignees = async (userIds: [string]) => {
       try {
-        await props.updateWorkorder({ userIds, users: userIds.map(getUserById) })
+        await props.updateWarehouseBoardItem({ userIds, users: userIds.map(getUserById) })
       } catch (error) {
         console.error(error)
       }
@@ -134,8 +134,8 @@ export default defineComponent({
 
     return {
       userOptions,
-      updateWorkorderReporter,
-      updateWorkorderAssignees
+      updateWarehouseBoardItemReporter,
+      updateWarehouseBoardItemAssignees
     }
   }
 })

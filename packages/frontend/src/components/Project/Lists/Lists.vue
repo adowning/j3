@@ -2,7 +2,7 @@
   <div class="flex container mt-7">
     <List
       @drop="onDrop"
-      v-for="status in WorkorderStatus"
+      v-for="status in WarehouseBoardItemStatus"
       :key="status"
       :status="status"
     >
@@ -13,17 +13,17 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from '@vue/composition-api'
 import List from '@/components/Project/Lists/List.vue'
-import { WorkorderStatus } from '@/types/workorder'
+import { WarehouseBoardItemStatus } from '@/types/warehouseboarditem'
 import { getters, mutations } from '@/store'
 import {
   DropResult,
   Target,
-  calculateWorkorderListPosition,
+  calculateWarehouseBoardItemListPosition,
   isPositionChanged,
   updateArrayItemById
 } from '@/utils/dnd'
 import { useMutation } from '@vue/apollo-composable'
-import { updateWorkorderMutation } from '@/graphql/queries/workorder'
+import { updateWarehouseBoardItemMutation } from '@/graphql/queries/warehouseboarditem'
 
 export default defineComponent({
   components: {
@@ -34,37 +34,37 @@ export default defineComponent({
     const destination = ref<Target>(null)
     const source = ref<Target>(null)
 
-    const { mutate } = useMutation(updateWorkorderMutation)
+    const { mutate } = useMutation(updateWarehouseBoardItemMutation)
 
-    const handleWorkorderDrop = (workorderId: string, d: Target, s: Target) => {
+    const handleWarehouseBoardItemDrop = (warehouseboarditemId: string, d: Target, s: Target) => {
       if (!isPositionChanged(s, d)) return
 
-      const workorderUpdateValues = {
+      const warehouseboarditemUpdateValues = {
         status: d.droppableId,
-        listPosition: calculateWorkorderListPosition(
-          project.value.workorders,
+        listPosition: calculateWarehouseBoardItemListPosition(
+          project.value.warehouseBoardItems,
           d,
           s,
-          workorderId
+          warehouseboarditemId
         )
       }
 
-      const workorders = updateArrayItemById(
-        project.value.workorders,
-        workorderId,
-        workorderUpdateValues
+      const warehouseBoardItems = updateArrayItemById(
+        project.value.warehouseBoardItems,
+        warehouseboarditemId,
+        warehouseboarditemUpdateValues
       )
 
       const oldProjectValues = getters.project()
       // optimistic update
       mutations.setProject({
         ...project.value,
-        workorders
+        warehouseBoardItems
       })
 
       mutate({
-        workorderId: Number(workorderId),
-        workorder: workorderUpdateValues
+        warehouseboarditemId: Number(warehouseboarditemId),
+        warehouseboarditem: warehouseboarditemUpdateValues
         // eslint-disable-next-line
       } as any).catch(e => {
         console.error(e)
@@ -89,18 +89,18 @@ export default defineComponent({
       if (addedIndex != null) {
         destination.value = {
           index: addedIndex,
-          droppableId: Object.values(WorkorderStatus)[to]
+          droppableId: Object.values(WarehouseBoardItemStatus)[to]
         }
       }
 
       if (destination.value != null && source.value != null) {
-        handleWorkorderDrop(payload.id, destination.value, source.value)
+        handleWarehouseBoardItemDrop(payload.id, destination.value, source.value)
       }
     }
 
     return {
       onDrop,
-      WorkorderStatus
+      WarehouseBoardItemStatus
     }
   }
 })

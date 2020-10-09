@@ -1,8 +1,8 @@
 <template>
   <div class="list">
     <div class="px-3 pb-4 pt-3 uppercase text-textMedium text-13 truncate">
-      {{ WorkorderStatusCopy[status] }}
-      <span class="lowercase text-13">{{ formatedWorkordersCount }}</span>
+      {{ WarehouseBoardItemStatusCopy[status] }}
+      <span class="lowercase text-13">{{ formatedWarehouseBoardItemsCount }}</span>
     </div>
     <div class="h-full px-2">
       <Container
@@ -14,8 +14,8 @@
         :get-child-payload="getCardPayload"
         :drop-placeholder="dropPlaceholderOptions"
       >
-        <Draggable v-for="(workorder, index) in filteredListWorkorders" :key="workorder.id">
-          <Workorder :workorder="workorder" :index="index" />
+        <Draggable v-for="(warehouseboarditem, index) in filteredListWarehouseBoardItems" :key="warehouseboarditem.id">
+          <WarehouseBoardItem :warehouseboarditem="warehouseboarditem" :index="index" />
         </Draggable>
       </Container>
     </div>
@@ -27,42 +27,42 @@ import dayjs from 'dayjs'
 import { defineComponent, computed } from '@vue/composition-api'
 import { Container, Draggable } from 'vue-smooth-dnd'
 
-import workorderComponent from '@/components/Project/Workorder/Workorder.vue'
+import warehouseboarditemComponent from '@/components/Project/WarehouseBoardItem/WarehouseBoardItem.vue'
 import { Filters } from '@/types/filters'
-import { Workorder, WorkorderStatusCopy, WorkorderStatus } from '@/types/workorder'
+import { WarehouseBoardItem, WarehouseBoardItemStatusCopy, WarehouseBoardItemStatus } from '@/types/warehouseboarditem'
 import { getters } from '@/store'
-import { DropResult, getSortedListWorkorders } from '../../../utils/dnd'
+import { DropResult, getSortedListWarehouseBoardItems } from '../../../utils/dnd'
 
-const filterWorkorders = (
-  projectWorkorders: Array<Workorder>,
+const filterWarehouseBoardItems = (
+  projectWarehouseBoardItems: Array<WarehouseBoardItem>,
   filters: Filters,
   currentUserId: string
 ) => {
   const { searchTerm, userIds, myOnly, recent } = filters
 
-  let workorders = [...projectWorkorders]
+  let warehouseBoardItems = [...projectWarehouseBoardItems]
 
   if (searchTerm) {
-    workorders = workorders.filter(workorder =>
-      workorder.title.toLowerCase().includes(searchTerm.toLowerCase())
+    warehouseBoardItems = warehouseBoardItems.filter(warehouseboarditem =>
+      warehouseboarditem.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
   }
   if (userIds.length > 0) {
-    workorders = workorders.filter(
-      workorder =>
-        [workorder.userIds, userIds].reduce((a, b) => a.filter(c => b.includes(c)))
+    warehouseBoardItems = warehouseBoardItems.filter(
+      warehouseboarditem =>
+        [warehouseboarditem.userIds, userIds].reduce((a, b) => a.filter(c => b.includes(c)))
           .length > 0
     )
   }
   if (myOnly && currentUserId) {
-    workorders = workorders.filter(workorder => workorder.userIds.includes(currentUserId))
+    warehouseBoardItems = warehouseBoardItems.filter(warehouseboarditem => warehouseboarditem.userIds.includes(currentUserId))
   }
   if (recent) {
-    workorders = workorders.filter(workorder =>
-      dayjs(workorder.updatedAt).isAfter(dayjs().subtract(3, 'day'))
+    warehouseBoardItems = warehouseBoardItems.filter(warehouseboarditem =>
+      dayjs(warehouseboarditem.updatedAt).isAfter(dayjs().subtract(3, 'day'))
     )
   }
-  return workorders
+  return warehouseBoardItems
 }
 
 export default defineComponent({
@@ -73,7 +73,7 @@ export default defineComponent({
     }
   },
   components: {
-    Workorder: workorderComponent,
+    WarehouseBoardItem: warehouseboarditemComponent,
     Container,
     Draggable
   },
@@ -82,22 +82,22 @@ export default defineComponent({
     const filters = computed(getters.filters)
     const currentUserId = computed(() => getters.currentUser().id)
 
-    const filteredWorkorders = computed(() =>
-      filterWorkorders(project.value.workorders, filters.value, currentUserId.value)
+    const filteredWarehouseBoardItems = computed(() =>
+      filterWarehouseBoardItems(project.value.warehouseBoardItems, filters.value, currentUserId.value)
     )
-    const filteredListWorkorders = computed(() =>
-      getSortedListWorkorders(filteredWorkorders.value, props.status)
-    )
-
-    const allListWorkorders = computed(() =>
-      getSortedListWorkorders(project.value.workorders, props.status)
+    const filteredListWarehouseBoardItems = computed(() =>
+      getSortedListWarehouseBoardItems(filteredWarehouseBoardItems.value, props.status)
     )
 
-    const formatedWorkordersCount = computed(() => {
-      if (allListWorkorders.value.length !== filteredListWorkorders.value.length) {
-        return `${filteredListWorkorders.value.length} of ${allListWorkorders.value.length}`
+    const allListWarehouseBoardItems = computed(() =>
+      getSortedListWarehouseBoardItems(project.value.warehouseBoardItems, props.status)
+    )
+
+    const formatedWarehouseBoardItemsCount = computed(() => {
+      if (allListWarehouseBoardItems.value.length !== filteredListWarehouseBoardItems.value.length) {
+        return `${filteredListWarehouseBoardItems.value.length} of ${allListWarehouseBoardItems.value.length}`
       }
-      return allListWorkorders.value.length
+      return allListWarehouseBoardItems.value.length
     })
 
     const dropPlaceholderOptions = {
@@ -108,24 +108,24 @@ export default defineComponent({
 
     // eslint-disable-next-line
     const onDrop = (dropResult: any) => {
-      const arr = Object.values(WorkorderStatus)
-      const to = arr.indexOf(props.status as WorkorderStatus)
+      const arr = Object.values(WarehouseBoardItemStatus)
+      const to = arr.indexOf(props.status as WarehouseBoardItemStatus)
       emit('drop', { ...dropResult, to } as DropResult)
     }
     const getCardPayload = (index: number) => {
-      const workordersByStatus = getSortedListWorkorders(
-        filteredListWorkorders.value,
+      const warehouseBoardItemsByStatus = getSortedListWarehouseBoardItems(
+        filteredListWarehouseBoardItems.value,
         props.status
       )
-      return workordersByStatus[index]
+      return warehouseBoardItemsByStatus[index]
     }
     return {
       onDrop,
       getCardPayload,
       dropPlaceholderOptions,
-      filteredListWorkorders,
-      formatedWorkordersCount,
-      WorkorderStatusCopy
+      filteredListWarehouseBoardItems,
+      formatedWarehouseBoardItemsCount,
+      WarehouseBoardItemStatusCopy
     }
   }
 })

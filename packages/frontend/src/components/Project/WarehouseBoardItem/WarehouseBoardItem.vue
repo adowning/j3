@@ -1,20 +1,20 @@
 <template>
-  <div class="workorder-wrap">
-    <div @click="openWorkorderDetails" class="workorder">
+  <div class="warehouseboarditem-wrap">
+    <div @click="openWarehouseBoardItemDetails" class="warehouseboarditem">
       <p class="pb-3 text-15 text-textDarkest">
-        {{ workorder.title }}
+        {{ warehouseboarditem.title }}
       </p>
       <div class="flex justify-between items-center">
         <div class="flex items-center">
           <j-icon
-            :name="workorder.type"
+            :name="warehouseboarditem.type"
             :size="20"
             class="text-textMedium mr-1"
           ></j-icon>
 
           <j-icon
-            :style="{ color: workorderPriorityStyles.color }"
-            :name="workorderPriorityStyles.icon"
+            :style="{ color: warehouseboarditemPriorityStyles.color }"
+            :name="warehouseboarditemPriorityStyles.icon"
             :size="20"
           ></j-icon>
         </div>
@@ -35,15 +35,15 @@
 
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api'
-import { Workorder, WorkorderPriority } from '@/types/workorder'
+import { WarehouseBoardItem, WarehouseBoardItemPriority } from '@/types/warehouseboarditem'
 import { getters } from '@/store'
-import { workorderPriorityColors } from '@/utils/colors'
+import { warehouseboarditemPriorityColors } from '@/utils/colors'
 import eventBus from '@/utils/eventBus'
 
 export default defineComponent({
   props: {
-    workorder: {
-      type: Object as () => Workorder,
+    warehouseboarditem: {
+      type: Object as () => WarehouseBoardItem,
       required: true
     },
     index: {
@@ -54,45 +54,45 @@ export default defineComponent({
   setup(props) {
     const project = computed(getters.project)
     const assignees = computed(() =>
-      props.workorder.userIds.map(userId =>
+      props.warehouseboarditem.userIds.map(userId =>
         project.value.users.find(user => user.id === userId)
       )
     )
 
-    const workorderPriorityStyles = computed(() => ({
-      icon: [WorkorderPriority.LOW, WorkorderPriority.LOWEST].includes(
-        props.workorder.priority
+    const warehouseboarditemPriorityStyles = computed(() => ({
+      icon: [WarehouseBoardItemPriority.LOW, WarehouseBoardItemPriority.LOWEST].includes(
+        props.warehouseboarditem.priority
       )
         ? 'arrow-down'
         : 'arrow-up',
-      color: workorderPriorityColors[props.workorder.priority]
+      color: warehouseboarditemPriorityColors[props.warehouseboarditem.priority]
     }))
 
-    const openWorkorderDetails = () => {
-      eventBus.$emit('toggle-workorder-details', true, props.workorder.id)
+    const openWarehouseBoardItemDetails = () => {
+      eventBus.$emit('toggle-warehouseboarditem-details', true, props.warehouseboarditem.id)
     }
 
     return {
       assignees,
-      workorderPriorityStyles,
-      openWorkorderDetails
+      warehouseboarditemPriorityStyles,
+      openWarehouseBoardItemDetails
     }
   }
 })
 </script>
 
 <style lang="postcss" scoped>
-.workorder-wrap {
+.warehouseboarditem-wrap {
   touch-action: manipulation;
   cursor: grab;
   margin-bottom: 5px;
 }
-.workorder {
+.warehouseboarditem {
   @apply rounded-sm bg-white  transition-all duration-100 select-none;
   padding: 10px;
   box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 2px 0px;
 }
-.workorder:hover {
+.warehouseboarditem:hover {
   @apply bg-backgroundLight;
 }
 </style>

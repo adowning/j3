@@ -4,9 +4,9 @@
     variant="empty"
     :dropdownWidth="150"
     :withClearValue="false"
-    :options="workorderTypeOptions"
+    :options="warehouseboarditemTypeOptions"
     :value="value"
-    @change="updateWorkorderType"
+    @change="updateWarehouseBoardItemType"
     customRender
     customRenderOption
   >
@@ -17,7 +17,7 @@
         variant="empty"
         :icon="icon"
       >
-        {{ `${label}-${workorderId}` }}
+        {{ `${label}-${warehouseboarditemId}` }}
       </j-button>
     </template>
     <template v-slot:option="{ label, icon }">
@@ -34,39 +34,39 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import { WorkorderType, WorkorderTypeCopy } from '@/types/workorder'
+import { WarehouseBoardItemType, WarehouseBoardItemTypeCopy } from '@/types/warehouseboarditem'
 export default defineComponent({
   props: {
     value: {
-      type: String as () => WorkorderType,
+      type: String as () => WarehouseBoardItemType,
       required: true
     },
-    workorderId: {
+    warehouseboarditemId: {
       type: [String, Number],
       required: true
     },
-    updateWorkorder: {
+    updateWarehouseBoardItem: {
       type: Function,
       required: true
     }
   },
   setup(props) {
-    const workorderTypeOptions = Object.values(WorkorderType).map(type => ({
+    const warehouseboarditemTypeOptions = Object.values(WarehouseBoardItemType).map(type => ({
       value: type,
-      label: WorkorderTypeCopy[type],
-      icon: WorkorderTypeCopy[type].toLowerCase()
+      label: WarehouseBoardItemTypeCopy[type],
+      icon: WarehouseBoardItemTypeCopy[type].toLowerCase()
     }))
-    const updateWorkorderType = async (type: WorkorderType) => {
+    const updateWarehouseBoardItemType = async (type: WarehouseBoardItemType) => {
       try {
-        await props.updateWorkorder({ type })
+        await props.updateWarehouseBoardItem({ type })
       } catch (error) {
         console.error(error)
       }
     }
 
     return {
-      workorderTypeOptions,
-      updateWorkorderType
+      warehouseboarditemTypeOptions,
+      updateWarehouseBoardItemType
     }
   }
 })

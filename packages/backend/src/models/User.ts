@@ -12,7 +12,7 @@ import {
 } from 'typeorm'
 import { ObjectType, Field, ID } from 'type-graphql'
 import is from '@/utils/validations'
-import { Issue, Project, Comment, Workorder } from '@/models'
+import { Issue, Project, Comment, WarehouseBoardItem } from '@/models'
 
 @ObjectType()
 @Entity()
@@ -60,12 +60,12 @@ class User extends BaseEntity {
   )
   issues: Issue[]
 
-  @Field(() => [Workorder])
+  @Field(() => [WarehouseBoardItem])
   @ManyToMany(
-    () => Workorder,
-    workorder => workorder.users
+    () => WarehouseBoardItem,
+    warehouseBoardItem => warehouseBoardItem.users
   )
-  workorders: Workorder[]
+  warehouseBoardItems: WarehouseBoardItem[]
 
   @Field(() => Project)
   @ManyToOne(

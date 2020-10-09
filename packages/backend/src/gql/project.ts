@@ -18,14 +18,14 @@ import { ProjectInput } from "@/gql/types";
 class ProjectResolver {
   @UseMiddleware([ResolveTime, IsAuth, ErrorInterceptor])
   @Query(() => Project)
-  async getProjectWithUsersAndWorkorders(
+  async getProjectWithUsersAndWarehouseBoardItems(
     @Ctx() ctx: GQLContext
   ): Promise<Project> {
     const project = await findEntityOrThrow(
       Project,
       ctx.req.currentUser.projectId,
       {
-        relations: ["workorders", "users"],
+        relations: ["warehouseBoardItems", "users"],
       }
     );
 

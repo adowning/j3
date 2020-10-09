@@ -1,6 +1,6 @@
 import { FindOneOptions } from "typeorm/find-options/FindOneOptions";
 
-import { Project, User, Issue, Comment, Workorder } from "@/models";
+import { Project, User, Issue, Comment, WarehouseBoardItem } from "@/models";
 import { EntityNotFoundError, BadUserInputError } from "@/errors";
 import { generateErrors } from "@/utils/validations";
 
@@ -8,14 +8,14 @@ type EntityConstructor =
   | typeof Project
   | typeof User
   | typeof Issue
-  | typeof Workorder
+  | typeof WarehouseBoardItem
   | typeof Comment;
-type EntityInstance = Project | User | Issue | Workorder | Comment;
+type EntityInstance = Project | User | Issue | WarehouseBoardItem | Comment;
 
 const entities: { [key: string]: EntityConstructor } = {
   Comment,
   Issue,
-  Workorder,
+  WarehouseBoardItem,
   Project,
   User,
 };

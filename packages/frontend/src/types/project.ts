@@ -1,6 +1,6 @@
 import { Issue } from './issue'
 import { User } from './user'
-import Workorder from './workorder'
+import WarehouseBoardItem from './warehouseboarditem'
 export enum ProjectCategory {
   CPTCLEANING = 'cptcleaning',
   MARKETING = 'marketing',
@@ -16,7 +16,7 @@ export interface Project {
   createdAt: Date
   updatedAt: Date
   issues: Issue[]
-  workorders: Workorder[]
+  warehouseBoardItems: WarehouseBoardItem[]
   users: User[]
 }
 
