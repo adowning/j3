@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contacts",
+  "info": {
+    "name": "Contact"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "accountID": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "createdOn": {
+      "type": "datetime"
+    },
+    "updatedAt": {
+      "type": "datetime"
+    },
+    "email": {
+      "type": "email"
+    },
+    "prettyAddress": {
+      "type": "string"
+    },
+    "commercial": {
+      "type": "boolean"
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "street": {
+      "type": "string"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "phone1": {
+      "type": "string"
+    },
+    "phone2": {
+      "type": "string"
+    },
+    "workorders": {
+      "via": "contact",
+      "collection": "workorder"
+    }
+  }
+}

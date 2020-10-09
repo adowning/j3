@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "customers",
+  "info": {
+    "name": "Customer"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "SMAccountID": {
+      "type": "string"
+    },
+    "workorders": {
+      "collection": "workorder"
+    }
+  }
+}

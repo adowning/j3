@@ -1,0 +1,90 @@
+{
+  "kind": "collectionType",
+  "collectionName": "workorders",
+  "info": {
+    "name": "Workorder"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "contact": {
+      "model": "contact",
+      "via": "workorders"
+    },
+    "orderID": {
+      "type": "string"
+    },
+    "accountID": {
+      "type": "string"
+    },
+    "createdOn": {
+      "type": "date"
+    },
+    "dateCompleted": {
+      "type": "date"
+    },
+    "dateCreated": {
+      "type": "date"
+    },
+    "dueDate": {
+      "type": "date"
+    },
+    "grandTotal": {
+      "type": "decimal"
+    },
+    "note": {
+      "type": "text"
+    },
+    "orderNumber": {
+      "type": "integer"
+    },
+    "orderType": {
+      "type": "enumeration",
+      "enum": [
+        "Invoice",
+        "Workorder",
+        "Estimate"
+      ]
+    },
+    "originalType": {
+      "type": "enumeration",
+      "enum": [
+        "Invoice",
+        "Workorder",
+        "Estimate"
+      ]
+    },
+    "RefNumber": {
+      "type": "string"
+    },
+    "siteID": {
+      "type": "string"
+    },
+    "subTotal": {
+      "type": "decimal"
+    },
+    "updatedAt": {
+      "type": "datetime"
+    },
+    "taxTotal": {
+      "type": "decimal"
+    },
+    "originalCreator": {
+      "type": "string"
+    },
+    "balanceDue": {
+      "type": "decimal"
+    },
+    "discountPercent": {
+      "type": "decimal"
+    },
+    "companyID": {
+      "type": "string"
+    },
+    "inHouse": {
+      "type": "boolean"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+2020-10-07 00:24:19.967 UTC [1] LOG:  ending log output to stderr
+2020-10-07 00:24:19.967 UTC [1] HINT:  Future log output will go to log destination "csvlog".
+2020-10-07 00:41:38.730 UTC [1] LOG:  ending log output to stderr
+2020-10-07 00:41:38.730 UTC [1] HINT:  Future log output will go to log destination "csvlog".
+2020-10-08 14:30:15.642 UTC [1] LOG:  ending log output to stderr
+2020-10-08 14:30:15.642 UTC [1] HINT:  Future log output will go to log destination "csvlog".

@@ -1,0 +1,97 @@
+version: "3.6"
+services:
+  # postgres:
+  #   image: postgres:12
+  #   restart: always
+  #   environment:
+  #     POSTGRES_PASSWORD: postgrespassword
+  #   volumes:
+  #     - db_data:/var/lib/postgresql/data
+  postgres:
+    image: supabase/postgres
+    # image: binakot/postgresql-postgis-timescaledb:latest
+    # build:
+    #   context: '/home/ash/Documents/j3/frontend/docker/timescale'
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./server/pg_data:/var/lib/postgresql/data
+    # volumes:
+    #   - ./server/db/dev/postgres/mnt:/docker-entrypoint-initdb.d/
+    command:
+      - postgres
+      - -c
+      - wal_level=logical
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  strapi:
+    image: strapi/strapi
+    restart: always
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_NAME: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+    volumes:
+      - ./app:/srv/app
+    ports:
+      - "1337:1337"
+
+  graphql-engine:
+    image: hasura/graphql-engine:latest
+    ports:
+      - "8088:8080"
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+      HASURA_GRAPHQL_ADMIN_SECRET: "$HASURA_GRAPHQL_ADMIN_SECRET"
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS256", "jwk_url": "http://hasura-backend-plus:3000/auth/jwks"}'
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_CORS_DOMAIN: "*"
+  hasura-backend-plus:
+    image: nhost/hasura-backend-plus:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      SERVER_URL: http://localhost:3000
+      HASURA_ENDPOINT: http://graphql-engine:8080/v1/graphql
+      HASURA_GRAPHQL_ADMIN_SECRET: "$HASURA_GRAPHQL_ADMIN_SECRET"
+      JWT_ALGORITHM: RS256
+      S3_ENDPOINT: http://minio:9000
+      S3_BUCKET: hasura-backend-plus
+      S3_ACCESS_KEY_ID: minio_access_key
+      S3_SECRET_ACCESS_KEY: "${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY}"
+      AUTO_MIGRATE: "true"
+  minio:
+    image: minio/minio
+    restart: always
+    environment:
+      S3_BUCKET: hasura-backend-plus
+      MINIO_ACCESS_KEY: minio_access_key
+      MINIO_SECRET_KEY: "${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY}" ## min 8 character
+    entrypoint: sh
+    command: "-c 'mkdir -p /export/hasura-backend-plus && /usr/bin/minio server /export'"
+    volumes:
+      - "./server/minio_data:/data"
+  pgadmin:
+    # container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "asdf@asdf.com"
+      PGADMIN_DEFAULT_PASSWORD: "asdfasdf"
+    volumes:
+      - ./server/pgadmin:/root/.pgadmin
+      - ./server/storage:/var/lib/pgadmin/storage
+    ports:
+      - "8888:80"
+    restart: unless-stopped
+volumes:
+  pgadmin:
+#   minio_data:
